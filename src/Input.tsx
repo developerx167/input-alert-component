@@ -17,7 +17,7 @@ type InputTypeProps = {
 }
 
  
-const Input = (props : InputTypeProps) => {
+export const Input = (props : InputTypeProps) => {
     const [wrapperClassName,setWrapperClassName] = useState<string>("input-wrapper-focus-off-default");
     const [alertClassName,setAlertClassName] = useState<string>("alert-focus-off-default");
     const [placeholderClassName,setPlaceholderClassName] = useState<string>("placeholder-focus-off-default");
@@ -115,5 +115,3 @@ const Input = (props : InputTypeProps) => {
         </div>
     )
 }
-
-export default Input
