@@ -1,160 +1,220 @@
-# TSDX React User Guide
+# Input Alert Component
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
-
-> This TSDX setup is meant for developing React component libraries (not apps!) that can be published to NPM. If you’re looking to build a React-based app, you should use `create-react-app`, `razzle`, `nextjs`, `gatsby`, or `react-static`.
-
-> If you’re new to TypeScript and React, checkout [this handy cheatsheet](https://github.com/sw-yx/react-typescript-cheatsheet/)
-
-## Commands
-
-TSDX scaffolds your new library inside `/src`, and also sets up a [Parcel-based](https://parceljs.org) playground for it inside `/example`.
-
-The recommended workflow is to run TSDX in one terminal:
-
-```bash
-npm start # or yarn start
 ```
+import React,{useState} from 'react'
+import {Input} from 'input-alert-component'
 
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
+export default function Home() {
+  const [value,setValue] = useState("");
+  return (
+    <main>
+      <form className='form' onSubmit={(e)=>e.preventDefault()}>
+        <Input
+          title="This is a title"
+          alertType={"default"}
 
-Then run the example inside another:
+          // support jsx as well
+          alertMessage="**This is a message"
 
-```bash
-cd example
-npm i # or yarn to install dependencies
-npm start # or yarn start
-```
+          // handle blur
+          blurHandler={()=>{}}
 
-The default example imports and live reloads whatever is in `/dist`, so if you are seeing an out of date component, make sure TSDX is running in watch mode like we recommend above. **No symlinking required**, we use [Parcel's aliasing](https://parceljs.org/module_resolution.html#aliases).
+          // handle focus
+          focusHandler={()=>{}}
 
-To do a one-off build, use `npm run build` or `yarn build`.
+          // any prop in input element except onfocus onblur
+          inputElementProps={{
+            placeholder : 'username', 
+            type : 'text',
+            onChange : (e)=>{setValue(e.target.value)},
+            value 
+          }}
 
-To run tests, use `npm test` or `yarn test`.
+          inputChildren={(<></>)}
+          inputChildrenPosition="left"
 
-## Configuration
+          // add style module
+          // styleModule={"yourStyleModule"}
 
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
-
-### Jest
-
-Jest tests are set up to run with `npm test` or `yarn test`.
-
-### Bundle analysis
-
-Calculates the real cost of your library using [size-limit](https://github.com/ai/size-limit) with `npm run size` and visulize it with `npm run analyze`.
-
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/example
-  index.html
-  index.tsx       # test your component here in a demo app
-  package.json
-  tsconfig.json
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
-```
-
-#### React Testing Library
-
-We do not set up `react-testing-library` for you yet, we welcome contributions and documentation on this.
-
-### Rollup
-
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
-
-### TypeScript
-
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
-
-## Continuous Integration
-
-### GitHub Actions
-
-Two actions are added by default:
-
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
-
-## Optimizations
-
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
-
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
-
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
+          // add className prefix and add this prefix in classes in css file
+          // classNamePrefix="my-prefix"
+        />
+      </form>
+    </main>
+)
 }
+
+
+  
 ```
 
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
 
-## Module Formats
+tailwind css :
 
-CJS, ESModules, and UMD module formats are supported.
+```
+/* ---------------------------------------------------- */
+/* ----------------- base styles ---------------------- */
+/* ---------------------------------------------------- */
 
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
 
-## Deploying the Example Playground
+/* remove background color on autofill ( more information : https://stackoverflow.com/a/29580847 )*/
+.input-box:-webkit-autofill,
+.input-box:-webkit-autofill:hover,
+.input-box:-webkit-autofill:focus,
+.input-box:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: rgba(107,114,128,1) !important;
+}
 
-The Playground is just a simple [Parcel](https://parceljs.org) app, you can deploy it anywhere you would normally deploy that. Here are some guidelines for **manually** deploying with the Netlify CLI (`npm i -g netlify-cli`):
+/* input box */
+.input-box{
+    /* don't put padding in wrapper, instead put padding in here (input) */
+    @apply p-4
+}
 
-```bash
-cd example # if not already in the example folder
-npm run build # builds to dist
-netlify deploy # deploy the dist folder
+/* input wrapper */
+.input-wrapper {
+    @apply rounded-lg border-2 transition-all text-gray-500 duration-300
+}
+
+/* input placeholder */
+.input-placeholder{
+    @apply px-1 ml-2 translate-y-[50%] transition-all duration-300 text-lg
+}
+
+/* input title */
+.input-title{
+    @apply text-gray-600 font-semibold text-lg block mb-3
+}
+
+/* input alert */
+.input-alert{
+    @apply block text-xs mt-2 select-none
+}
+
+/* input disabled */
+.input-disabled{
+    @apply h-full w-full rounded-lg bg-gray-400/60
+}
+
+
+/* ---------------------------------------------------- */
+/* --------- styles for input focus off --------------- */
+/* ---------------------------------------------------- */
+
+/* input wrapper */
+.input-wrapper-focus-off-error{
+    @apply bg-red-100 border-red-200
+}
+.input-wrapper-focus-off-default{
+    @apply bg-gray-200
+}
+
+/* input alert */
+.alert-focus-off-error {
+    @apply text-red-400
+}
+.alert-focus-off-default {
+    @apply text-gray-400
+}
+
+/* input placeholder */
+.placeholder-focus-off-error{
+    @apply text-red-400
+}
+.placeholder-focus-off-default{
+    @apply text-gray-600
+}
+
+/* title */
+.title-focus-off-error{
+    @apply text-red-400
+}
+.title-focus-off-default{
+    @apply text-gray-600
+}
+
+
+
+/* ---------------------------------------------------- */
+/* ---------- styles for input focus on --------------- */
+/* ---------------------------------------------------- */
+
+/* input wrapper */
+.input-wrapper-focus-on-error{
+    @apply bg-white border-red-200
+}
+.input-wrapper-focus-on-default{
+    @apply bg-white
+}
+
+/* input alert */
+.alert-focus-on-error {
+    @apply text-red-400
+}
+.alert-focus-on-default {
+    @apply text-gray-400
+}
+
+/* input placeholder */
+.placeholder-focus-on-error{
+    @apply text-red-400
+}
+.placeholder-focus-on-default{
+    @apply text-gray-400
+}
+/* input placeholder up on focus or if placeholder not shown */
+.input-box:focus + .input-placeholder{
+    @apply -translate-y-[60%] bg-white text-sm
+}
+.input-box:not(:placeholder-shown) + .input-placeholder{
+    @apply -translate-y-[60%] bg-white text-sm
+}
+/* if default change color */
+.input-box:focus + .placeholder-focus-off-default{
+    @apply -translate-y-[60%] bg-white text-sm text-gray-400
+}
+.input-box:not(:placeholder-shown) + .placeholder-focus-off-default{
+    @apply -translate-y-[60%] bg-white text-sm text-gray-400
+}
+
+/* input title */
+.title-focus-on-error{
+    @apply text-red-400
+}
+.title-focus-on-default{
+    @apply text-gray-600
+}
+
+
+
+
+
+
+/* ---------------------------------------------------- */
+/* ---------- others (related with example) --------------- */
+/* ---------------------------------------------------- */
+
+/* form */
+.form{
+    @apply w-[30rem] m-auto p-4 py-10 bg-white shadow-2xl rounded-lg flex flex-col gap-y-5
+}
+
+
+
 ```
 
-Alternatively, if you already have a git repo connected, you can set up continuous deployment with Netlify:
-
-```bash
-netlify init
-# build command: yarn build && cd example && yarn && yarn build
-# directory to deploy: example/dist
-# pick yes for netlify.toml
+styling input childrens :
 ```
+/* style your input children (use the className you have given to input children)*/
+.inputChildren{
+    @apply flex items-center pl-2 text-white transition-all duration-300
+}
+.input-wrapper-focus-on-error > .inputChildren{
+    @apply text-red-400
+}
+.input-wrapper-focus-on-default > .inputChildren{
+    @apply text-gray-400
+}
 
-## Named Exports
-
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
-
-## Including Styles
-
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
-
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
-
-## Publishing to NPM
-
-We recommend using [np](https://github.com/sindresorhus/np).
-
-## Usage with Lerna
-
-When creating a new package with TSDX within a project set up with Lerna, you might encounter a `Cannot resolve dependency` error when trying to run the `example` project. To fix that you will need to make changes to the `package.json` file _inside the `example` directory_.
-
-The problem is that due to the nature of how dependencies are installed in Lerna projects, the aliases in the example project's `package.json` might not point to the right place, as those dependencies might have been installed in the root of your Lerna project.
-
-Change the `alias` to point to where those packages are actually installed. This depends on the directory structure of your Lerna project, so the actual path might be different from the diff below.
-
-```diff
-   "alias": {
--    "react": "../node_modules/react",
--    "react-dom": "../node_modules/react-dom"
-+    "react": "../../../node_modules/react",
-+    "react-dom": "../../../node_modules/react-dom"
-   },
 ```
-
-An alternative to fixing this problem would be to remove aliases altogether and define the dependencies referenced as aliases as dev dependencies instead. [However, that might cause other problems.](https://github.com/palmerhq/tsdx/issues/64)
